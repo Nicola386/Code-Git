@@ -1,0 +1,11 @@
+| Index | Wert   | Bedeutung                                            |
+| ----- | ------ | ---------------------------------------------------- |
+| 0     | 5.07   | Sonnenaufgang in Dezimalstunden (z.B. 5:04 Uhr)      |
+| 1     | 21.03  | Sonnenuntergang in Dezimalstunden (z.B. 21:02 Uhr)   |
+| 2     | 253.86 | Azimut der Sonne in Grad (Winkel auf dem Horizont)   |
+| 3     | 36.86  | Elevation der Sonne in Grad (Höhe über dem Horizont) |
+| 4     | 100.0  | Wolkenbedeckung in Prozent (%)                       |
+| 5     | 230    | Fensterorientierung in Grad (z.B. 230° = Süd-West)   |
+| 6     | 16     | Stunde des Zeitpunkts (16 Uhr)                       |
+| 7     | 42     | Minute des Zeitpunkts (42 Minuten)                   |
+

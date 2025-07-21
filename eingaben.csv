@@ -1,0 +1,7 @@
+Fenster Ausrichtung (Grad),Monitor Ausrichtung (Grad),Rolladen unten (True/False),Licht an (True/False)
+230,270,False,True
+,,True,True
+,,False,False
+230,False,False,0
+230,False,True,180
+239,False,True,0
