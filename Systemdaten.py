@@ -4,7 +4,6 @@ import time
 from datetime import datetime
 import re
 import requests
-import json
 
 def Systemdaten():
     jetzt= dt.datetime.now()
@@ -59,12 +58,10 @@ def monitor():
     return Helligkeit,Kontrast,data
 
 def Standort():
-    response = requests.get('https://api.ipify.org')
-    ip_address = response.text
+    data = requests.get("https://ipinfo.io/json").json()
+    ip_address = data.get("ip", "Unbekannt")
+    stadt = data.get("city", "Unbekannt")
 
-    response = requests.get(f"https://ipinfo.io/{ip_address}/json")
-    data = response.json()
-    stadt=data["city"]
     return ip_address,stadt
 
 ##############Debuggen############
