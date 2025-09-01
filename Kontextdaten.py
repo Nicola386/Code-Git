@@ -2,8 +2,7 @@ import os
 import time
 import pandas as pd
 from datetime import timedelta, datetime
-from API_Abfrage import API_Abfrage
-from Lux_berechnung import berechne_lux
+from Wetterdaten import API_Abfrage
 
 # Pfad des aktuellen Skriptverzeichnisses
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -45,10 +44,7 @@ def collect_data(city, last_api_call_time, last_data, window_orientation, api_da
     h, m, s = map(int, Sonnenuntergang.split(":"))
     Sonnenuntergang = round(h + m / 60 + s / 3600, 2)
 
-    # Lux-Berechnung mit der gegebenen Fensterorientierung
-    lux, azimuth, elevation = berechne_lux(
-        sunrise_local, sunset_local, current_time, cloudiness, hemisphaere, window_orientation, azimuth, elevation
-    )
+
 
     # Speichern der neuen Daten in last_data
     last_data = {
@@ -58,7 +54,7 @@ def collect_data(city, last_api_call_time, last_data, window_orientation, api_da
         'elevation': elevation,
         'cloudiness': cloudiness,
         'window': window_orientation,
-        'lux': lux
+        
     }
 
     # Datensatz zum Speichern
@@ -71,7 +67,7 @@ def collect_data(city, last_api_call_time, last_data, window_orientation, api_da
         'elevation': elevation,
         'cloudiness': cloudiness,
         'window': window_orientation,
-        'lux': lux
+        
     }
 
     return data, last_api_call_time, last_data
@@ -111,6 +107,7 @@ def collect_data_for_one_hour(cities, window_orientations, interval_seconds=1):
 
 # Beispiel-Aufruf
 window_orientations = [330, 230, 140, 70]
-cities = ["Karlsruhe", "Berlin", "Hamburg", "München", "Köln", "Frankfurt"]
+#cities = ["Karlsruhe", "Berlin", "Hamburg", "München", "Köln", "Frankfurt"]
+cities =["St.Louise"] 
 
 collect_data_for_one_hour(cities, window_orientations)

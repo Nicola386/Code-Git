@@ -1,12 +1,28 @@
 import numpy as np
-import math
-from API_Abfrage import API_Abfrage
+import json
+from datetime import datetime
+from Wetterdaten import API_Abfrage
 from Systemdaten import Standort
+with open("solardaten.json","r") as f:
+    solar_data=json.load(f)
+
+#Solardaten aus Datenstruktur entnehmen
+monat=datetime.now().strftime("%b")
+daten=solar_data.get(monat)
+A = daten["A"]
+B = daten["B"]
+C = daten["C"]
 
 def einfallendes_Licht(moebel,Fenster_ausr,Fenster_pos):
+    #Daylightfaktor Parameter
+    tau=0.8             #Lichttransmission Fenster
+    M=0.8               #Wartungsfaktor (wie verschmutzt)
+    At=28.7             #28.7 Raumoberflächen [m²]               
+    Ag=3                #Fenster Größe [m²]
+    
     ip_address,stadt=Standort()
     city=stadt
-    sunrise_local, sunset_local, hemisphaere, cloudiness, timezone_offset, azimuth, elevation,weather_discription = API_Abfrage(city)
+    sunrise_local, sunset_local, cloudiness, azimuth, elevation, weather_description = API_Abfrage(city)
 
     #Reflexionswert
     if moebel=='hell':
@@ -19,26 +35,23 @@ def einfallendes_Licht(moebel,Fenster_ausr,Fenster_pos):
     # Fenster Ausrichtung
     gamma_s_rad = np.radians(elevation)               # Sonnenhöhe (Solar Altitude) in Radiant
     psi = Fenster_ausr                                # Orientierung Fenster (Himmelsrichtung)
-    gamma_rad = np.radians(azimuth - psi + 180)       # Winkel zwischen Fenster und Sonne in Radiant
+    gamma_rad =(azimuth-180) - psi                    # Winkel zwischen Fenster und Sonne 
 
     # Einfallswinkel der Sonne auf vertikale Fläche (für I_VT direkte Komponente)
     # Cosinus des Einfallswinkels theta_v auf eine vertikale Fläche
-    cos_theta_v = (np.cos(gamma_s_rad) * np.cos(gamma_rad))
+    cos_theta_v = np.cos(gamma_s_rad*(2*np.pi/360)) *np.cos(gamma_rad*(2*np.pi/360))
+
     # Sicherstellen, dass der Wert im gültigen Bereich für arccos liegt
     cos_theta_v = np.clip(cos_theta_v, -1.0, 1.0) 
     theta_v_rad = np.arccos(cos_theta_v)
     theta_v_deg = np.degrees(theta_v_rad)             # Bogenmaß in Gradmaß umrechnen (nur zur Anzeige)
 
-    ######################################################
-    # Werte für A und B provisorisch später aus data Datei
-    ######################################################
-    A=1085
-    B=0.207
+   
     # E_DN (Direct Normal Irradiance) in W/m^2
     E_DN = A / (np.exp(B / np.sin(gamma_s_rad)))
     E_DN = round(E_DN, 2)
 
-    # Luminöse Effizienz (eta) 
+    # Luminöse Effizienz (eta)  
     CF=cloudiness
     eta = 115 * (CF / 100) + 59.3 * (gamma_s_rad)**0.1252 * (1 - (CF/ 100))
     
@@ -50,10 +63,7 @@ def einfallendes_Licht(moebel,Fenster_ausr,Fenster_pos):
     else:
         Y=0.45
     
-    ######################################################
-    # Werte für C provisorisch später aus data Datei
-    ######################################################
-    C=0.136
+ 
     E_d = C * Y * E_DN
     E_d=round(E_d,2)
     # Sonneneinstrahlung (Bestrahlungsstärke in W/m^2)
@@ -61,15 +71,26 @@ def einfallendes_Licht(moebel,Fenster_ausr,Fenster_pos):
     # I_HT = Direkte horizontale Bestrahlungsstärke + Diffuse horizontale Bestrahlungsstärke
     # Direkte horizontale Bestrahlungsstärke = E_DN * sin(gamma_s)
     # Diffuse horizontale Bestrahlungsstärke = E_d (wenn E_d tatsächlich die diffuse ist)
-    E_DNV=E_DN*cos_theta_v
-    I_VT = E_DNV + E_d
-    I_VT = round(I_VT, 2)
+    E_DNV=max(0,E_DN*cos_theta_v)
+    
+    #Direkter Sonneneinfall
+    E_dir=E_DN*tau*M*eta
+    a_M=(Fenster_pos+Fenster_ausr) %360
+    gamma_M=(azimuth-180) - a_M
+    cos_theta_SM=np.cos(gamma_s_rad*(2*np.pi/360))*np.cos(gamma_M*(2*np.pi/360))
 
-    #Daylightfaktor Parameter
-    tau=0.7             #Lichttransmission Fenster
-    M=0.8               #Wartungsfaktor (wie verschmutzt)
-    At=28.7             #28.7 Raumoberflächen [m²]               
-    Ag=2                #Fenster Größe [m²]
+    if (cos_theta_v>0) and (cos_theta_SM>0):
+        S=1
+    else:
+        S=0
+    E_dir=E_dir*S
+    E_dir=round(E_dir,2)
+    #Boden reflektion
+    rho=0.2                             #später vielleicht aus der Tabelle
+    E_R=E_DN*(C*np.sin(gamma_s_rad))*rho/2
+    E_R=round(E_R,2)
+    I_VT = E_DNV + E_d+E_R
+    I_VT = round(I_VT, 2)
     
     # Der Parameter theta in Formel (13) ist "the vertical angle of visible sky from the center of the window".
     # Dies ist NICHT der Sonnen-Einfallswinkel (theta_v_rad).
@@ -83,28 +104,32 @@ def einfallendes_Licht(moebel,Fenster_ausr,Fenster_pos):
     E_i = (Ag * tau * theta_sky_angle_rad * M * I_VT * eta) / (At * (1 - R**2) * 0.396 * 100)
     E_i = round(E_i, 2)
 
-    ######################################################
-    # Debuggen
-    print("Sonnenhöhe (Grad):", elevation)
-    print("Sonnenhöhe (Rad):", gamma_s_rad)
-    print("azimuth:", azimuth)
-    print("cos_theta_v:", cos_theta_v)
-    print("theta_v (Grad):", theta_v_deg)
-    print("theta_v (Rad):", theta_v_rad)
-    print("CF:", CF)
-    print("eta:", eta)
-    print("Y:", Y)
-    print("E_d (Diffuse Horizontale Bestrahlungsstärke W/m^2):", E_d)
-    print("E_DN (Direct Normal Irradiance W/m^2):", E_DN)
-    print("E_DNV",E_DNV)
-    print("I_VT (Vertikale Bestrahlungsstärke W/m^2):", I_VT)
-    print("Theta Sky Angle (Rad):", theta_sky_angle_rad)
-    print("E_i (Einfallendes Licht):", E_i)
-    ######################################################
 
-    return E_i,weather_discription,azimuth,elevation
+    return ip_address,city,E_dir,E_i,weather_description,azimuth,elevation,sunrise_local, sunset_local
+
+def Kontrast(D_i,R_D,L_max,L_min):
+    
+    r_soll=50
+    L_r=(D_i*R_D)/ np.pi
+    L_r=round(L_r,2)
+    L_hell=L_max+L_r
+    L_dunkel=L_min+L_r
+    r_ist=L_hell/L_dunkel
+    r_ist=int(r_ist)
+
+    if r_soll != r_ist:
+        L_max_neu= r_soll*(L_min+L_r)-L_r
+
+    L_max_neu=round(L_max_neu,2)
+
+    return L_r,L_max_neu,r_ist
 
 ################################################
 #Debuggen
-einfallendes_Licht('hell', 230, 0)
+# if __name__ == "__main__":
+#     result = einfallendes_Licht('hell',90, 0)
+# if result:
+#     (ip_address,city,E_dir,E_i,weather_description,azimuth,elevation,sunrise_local, sunset_local)=result
+#     print("Direkte Sonneneinstrahlung W/m²:",E_dir)
+#     print("E_i (Einfallendes Licht):", E_i)
 ################################################

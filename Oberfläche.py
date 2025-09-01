@@ -1,112 +1,118 @@
-import numpy as np
-from PyQt5 import uic
-from PyQt5.QtCore import QTimer
-from PyQt5.QtWidgets import QApplication, QDialog, QGraphicsScene,QLabel
-from PyQt5.QtGui import QPixmap
 import sys
-from Berechnung import einfallendes_Licht
-from Systemdaten import Standort
-from Systemdaten import monitor
+from PyQt5 import uic
+from PyQt5.QtWidgets import QApplication, QDialog, QLabel, QPushButton
+from Berechnung import einfallendes_Licht ,Kontrast
+from Systemdaten import Standort, monitor
+from Monitor import Helligkeit_Regeln
+from datetime import datetime ,time
 
+richtung_zu_grad = {
+    "N": 180, 
+    "NO": -135, 
+    "O": -90, 
+    "SO": -45,
+    "S": 0, 
+    "SW": 45, 
+    "W": 90, 
+    "NW": 135
+}
+richtung_zu_winkel={
+    "vorne":180,
+    "vr":-135,
+    "rechts":-90,
+    "rh":-45,
+    "hinten":0,
+    "lh":45,
+    "links":90,
+    "vl":135
+
+}
 
 class MyWindow(QDialog):
     def __init__(self):
         super().__init__()
         uic.loadUi("Oberfläche.ui", self)
 
-        self.selected_angle = None  # Speichert den Fensterwinkel
-        self.bildpfad = "arbeitsplatz.png"
-
-        # Eingabe-Button verbinden
         self.pushButton_eingabe.clicked.connect(self.eingabe_auswerten)
-        
-        ###########Läuft nicht gut################
-        #Timer alle 10sec
-        #self.timer=QTimer(self)
-        #self.timer.timeout.connect(self.eingabe_auswerten)
-        #self.timer.start(10000)
-        #############################################
 
     def eingabe_auswerten(self):
+        # Aktiver Button aus ButtonGroup "Himmelsrichtung"
+        checked_button = self.Himmelsrichtung.checkedButton()
+        richtung = checked_button.text() if checked_button else "N"
+        grad = richtung_zu_grad.get(richtung, 0)
+        #Button aus ButtonGroup "Fenster_pos"
+        fenster=self.Fenster_pos.checkedButton()
+        fenster_pos=fenster.text() if fenster else "vorne"
+        winkel=richtung_zu_winkel.get(fenster_pos,0)
 
-        grad = self.spinBox.text()
+        Kein_Fenster=self.checkBox_2.isChecked()
         rollladen = self.comboBox.currentText()
-        licht = self.comboBox_2.currentText()
-        moebel=self.comboBox_3.currentText()
-        winkel=self.dial.value()
-        Fenster_pos=(winkel+180)%360
-        
+        Licht = self.comboBox_2.currentText()
+        moebel = self.comboBox_3.currentText()
+        Auto_Modus=self.checkBox.isChecked()
 
-        #Eingabe
-        Ausgabe1=(
-            f"Ausrichtung:{grad}\n"
-            f"Rollladen:{rollladen}\n"
-            f"Licht:{licht}\n"
-            f"Möbel:{moebel}\n"
-            f"Fensterwinkel:{Fenster_pos}\n"
-    
+        K = 1 if self.comboBox_2.currentText() == "An" else 0
+        Licht = "An" if K else "Aus"
+
+        J=0 if (self.comboBox.currentText()== "Ja") or (Kein_Fenster==True)else 1
+        rollladen="Nein" if J else "Ja"
+
+        if Auto_Modus:
+            jetzt = datetime.now().time()
+            K = int(jetzt >= time(22, 0) or jetzt < time(9, 0))
+            Licht = "An" if K else "Aus"
+        
+        # Ausgabe
+        self.findChild(QLabel, 'Ausgabe').setText(
+            f"Ausrichtung: {grad}°\n"
+            f"Rollladen: {rollladen}\n"
+            f"Licht: {Licht}\n"
+            f"Möbel: {moebel}\n"
+            f"Fensterwinkel: {winkel}\n"
         )
-        Ausgabe = self.findChild(QLabel, 'Ausgabe')
-        Ausgabe.setText(Ausgabe1)
 
-        #Berechnung
-        Fenster_ausr=int(grad)
-        E_i,weather_discription,azimuth,elevation=einfallendes_Licht(moebel,Fenster_ausr,Fenster_pos)
+        ip,stadt,E_dir,E_i,weather_description,azimuth,elevation,sunrise_local, sunset_local = einfallendes_Licht(moebel, grad, winkel)
+        #F = fenster_pos / 180 if fenster_pos <= 180 else -fenster_pos / 180 + 2            #Direkte Beleuchtung Monitor
+        E_k=500
+        E_k=E_k*K
+        E_i=E_i*J
+        E_dir=E_dir*J
 
-        #Tim Funktion
-        if Fenster_pos <=180:
-            F=1/180*Fenster_pos  
-        elif Fenster_pos>180:
-            F=-1/180*Fenster_pos+2
-        D_i=E_i*F
-        D_i=round(D_i,2)
+        D_i = round((E_i*0.535)+(E_k*0.235)+(E_dir))
         
-        Ausgabe2=(
-            f"Einfallendes Licht: {E_i} Lux\n"
+        R_D=0.05
+        L_max=250
+        L_min=0.25
+        L_r,L_max_neu,r_ist=Kontrast(D_i,R_D,L_max,L_min)
+
+        helligkeit, kontrast, data = monitor()
+        dis1, dis2 = data["Display1"]["Model"], data["Display2"]["Model"]
+
+        Helligkeit_Regeln(helligkeit,L_max,L_max_neu)
+
+        self.findChild(QLabel, 'LuxWert').setText(
+            f"natürliches Licht: {E_i} Lux\n"
+            f"Künstliches Licht: {E_k} Lux\n"
+            f"Direkte Sonneneinstrahlung: {E_dir} Lux\n"
             f"Licht auf Monitor: {D_i} Lux\n"
-
-
-        )
-        LuxWert = self.findChild(QLabel, 'LuxWert')
-        LuxWert.setText(Ausgabe2)
-        
-        #Api_Werte
-        
-        API=(
-            f"Wetter: {weather_discription}\n"
-            f"Sonnenposition: {azimuth} in Grad\n"
-            f"Sonnenhöhe: {elevation} in Grad\n"
-
+            f"Reflektiertes Licht: {L_r} cd/m²\n"
+            f"neue max Heligkeit: {L_max_neu} cd/m²\n"
+            f"ist Kontrast: {r_ist}\n"
         )
 
-        WetterDaten= self.findChild(QLabel, 'WetterDaten')
-        WetterDaten.setText(API)
-
-        #Systemdaten
-        ip_adresse,stadt=Standort()
-        Helligkeit,Kontrast,data=monitor()
-        Dis1=data["Display1"]["Model"]
-        Dis2=data["Display2"]["Model"]
-        Ausgabe3=(
-            f"IP-Adresse:{ip_adresse}\n"
-            f"Stadt:{stadt}\n\n"
-             f"Monitor1-Model: {Dis1}\n"
-            f"Monitor-Helligkeit:{Helligkeit[1]}\n"
-            f"Monitor-Kontrast:{Kontrast[1]}\n\n"
-            f"Monitor2-Model: {Dis2}\n"
-            f"Monitor-Helligkeit:{Helligkeit[2]}\n"
-            f"Monitor-Kontrast:{Kontrast[2]}\n"
+        self.findChild(QLabel, 'WetterDaten').setText(
+            f"Wetter: {weather_description}\n"
+            f"Sonnenposition: {azimuth}°\n"
+            f"Sonnenhöhe: {elevation}°\n"
+            f"Sonnenaufgang: {sunrise_local.strftime('%H:%M:%S')}\n"
+            f"Sonnenuntergang: {sunset_local.strftime('%H:%M:%S')}\n"
         )
 
-        Systemdaten = self.findChild(QLabel, 'Systemdaten')
-        Systemdaten.setText(Ausgabe3)
-
-
-
-
-        # Bildgröße nur anzeigen, wenn vorhanden
-        if hasattr(self, "geladenes_bild"):
-            print("Bildgröße (px):", self.geladenes_bild.width(), "x", self.geladenes_bild.height())
+        self.findChild(QLabel, 'Systemdaten').setText(
+            f"IP-Adresse: {ip}\nStadt: {stadt}\n\n"
+            f"Monitor1: {dis1}, \nHelligkeit: {helligkeit[1]}, \nKontrast: {kontrast[1]}\n\n"
+            f"Monitor2: {dis2}, \nHelligkeit: {helligkeit[2]}, \nKontrast: {kontrast[2]}\n"
+        )
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

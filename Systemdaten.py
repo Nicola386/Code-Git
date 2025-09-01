@@ -34,12 +34,12 @@ def monitor():
                 data[f"Display{display}"]=info
 
                 # Für jedes Display Helligkeit und Kontrast abrufen und anzeigen
-                for display in displays:
-                    #print(f"\n  Display {display}")
-                    brightness = subprocess.run(["ddcutil", "--display", str(display), "getvcp", "10"], capture_output=True, text=True)
-                    contrast = subprocess.run(["ddcutil", "--display", str(display), "getvcp", "12"], capture_output=True, text=True)
-                    Helligkeit[display]=brightness.stdout.split(":")[-1].strip()
-                    Kontrast[display]=contrast.stdout.split(":")[-1].strip()
+                #for display in displays:
+                print(f"\n  Display {display}")
+                brightness = subprocess.run(["ddcutil", "--display", str(display), "getvcp", "10"], capture_output=True, text=True)
+                contrast = subprocess.run(["ddcutil", "--display", str(display), "getvcp", "12"], capture_output=True, text=True)
+                Helligkeit[display]=brightness.stdout.split(":")[-1].strip()
+                Kontrast[display]=contrast.stdout.split(":")[-1].strip()
                     
                     
 
@@ -55,9 +55,10 @@ def monitor():
     
     #print(result.stdout)
     #print(data)    
-    return Helligkeit,Kontrast,data
+    return Helligkeit,Kontrast, data
 
 def Standort():
+    print("Standort funktioniert")
     data = requests.get("https://ipinfo.io/json").json()
     ip_address = data.get("ip", "Unbekannt")
     stadt = data.get("city", "Unbekannt")
@@ -65,5 +66,6 @@ def Standort():
     return ip_address,stadt
 
 ##############Debuggen############
-#monitor()
+#data=monitor()
+#print(data)
 ##############Debuggen############
