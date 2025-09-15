@@ -52,8 +52,10 @@ def einfallendes_Licht(moebel,Fenster_ausr,Fenster_pos):
     E_DN = round(E_DN, 2)
 
     # Luminöse Effizienz (eta)  
-    CF=cloudiness
-    eta = 115 * (CF / 100) + 59.3 * (gamma_s_rad)**0.1252 * (1 - (CF/ 100))
+    CF=cloudiness/100
+    eta = 115 * (CF) + 59.3 * (gamma_s_rad)**0.1252 * (1 - (CF))
+    #Bewölktheit
+    F_CF=1-0.75*(CF)**3.4
     
     # Diffuse Beleuchtung (E_d)
     # E_d ist die diffuse BESTRAHLUNGSSTÄRKE in W/m^2 auf einer HORIZONTALEN Fläche
@@ -74,7 +76,7 @@ def einfallendes_Licht(moebel,Fenster_ausr,Fenster_pos):
     E_DNV=max(0,E_DN*cos_theta_v)
     
     #Direkter Sonneneinfall
-    E_dir=E_DN*tau*M*eta
+    E_dir=E_DNV*tau*M*eta
     a_M=(Fenster_pos+Fenster_ausr) %360
     gamma_M=(azimuth-180) - a_M
     cos_theta_SM=np.cos(gamma_s_rad*(2*np.pi/360))*np.cos(gamma_M*(2*np.pi/360))
@@ -87,21 +89,21 @@ def einfallendes_Licht(moebel,Fenster_ausr,Fenster_pos):
     E_dir=round(E_dir,2)
     #Boden reflektion
     rho=0.2                             #später vielleicht aus der Tabelle
-    E_R=E_DN*(C*np.sin(gamma_s_rad))*rho/2
+    E_R=E_DN*(C+np.sin(gamma_s_rad))*rho*0.5
     E_R=round(E_R,2)
-    I_VT = E_DNV + E_d+E_R
-    I_VT = round(I_VT, 2)
+    E_t = (E_DNV + E_d+E_R)*F_CF
+    E_t = round(E_t, 2)
     
     # Der Parameter theta in Formel (13) ist "the vertical angle of visible sky from the center of the window".
     # Dies ist NICHT der Sonnen-Einfallswinkel (theta_v_rad).
     # Ein typischer Wert könnte 30-60 Grad sein, je nach Fenstertyp und -höhe.
     # Angenommen, das Fenster ist so, dass ein bestimmter Winkel des Himmels sichtbar ist.
     # Der Winkel muss im Bogenmaß (Radiant) sein, da er in der Formel nicht mit sin/cos etc. verwendet wird.
-    theta_sky_angle_rad = np.radians(45) # Beispielwert: 45 Grad vertikaler Himmelblick vom Fenster
+    theta_F = np.radians(45) # Beispielwert: 45 Grad vertikaler Himmelblick vom Fenster
 
 
     # Einfallendes Licht E_i 
-    E_i = (Ag * tau * theta_sky_angle_rad * M * I_VT * eta) / (At * (1 - R**2) * 0.396 * 100)
+    E_i = (Ag * tau * theta_F * M * E_t * eta) / (At * (1 - R**2) * 0.396 * 100)
     E_i = round(E_i, 2)
 
 
@@ -112,10 +114,13 @@ def Kontrast(D_i,R_D,L_max,L_min):
     r_soll=50
     L_r=(D_i*R_D)/ np.pi
     L_r=round(L_r,2)
+    # ###################################
+    # ist Kontarst übeflüssig
     L_hell=L_max+L_r
     L_dunkel=L_min+L_r
     r_ist=L_hell/L_dunkel
     r_ist=int(r_ist)
+    #######################################
 
     if r_soll != r_ist:
         L_max_neu= r_soll*(L_min+L_r)-L_r

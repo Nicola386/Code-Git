@@ -32,7 +32,7 @@ class MyWindow(QDialog):
     def __init__(self):
         super().__init__()
         uic.loadUi("Oberfläche.ui", self)
-
+        
         self.pushButton_eingabe.clicked.connect(self.eingabe_auswerten)
 
     def eingabe_auswerten(self):
@@ -45,6 +45,8 @@ class MyWindow(QDialog):
         fenster_pos=fenster.text() if fenster else "vorne"
         winkel=richtung_zu_winkel.get(fenster_pos,0)
 
+        SK=self.spinBox_2.value()
+        L_max=self.spinBox.value()
         Kein_Fenster=self.checkBox_2.isChecked()
         rollladen = self.comboBox.currentText()
         Licht = self.comboBox_2.currentText()
@@ -62,6 +64,8 @@ class MyWindow(QDialog):
             K = int(jetzt >= time(22, 0) or jetzt < time(9, 0))
             Licht = "An" if K else "Aus"
         
+        L_min=L_max/SK
+
         # Ausgabe
         self.findChild(QLabel, 'Ausgabe').setText(
             f"Ausrichtung: {grad}°\n"
@@ -69,6 +73,8 @@ class MyWindow(QDialog):
             f"Licht: {Licht}\n"
             f"Möbel: {moebel}\n"
             f"Fensterwinkel: {winkel}\n"
+            f"Max. Monitor Helligkeit: {L_max}\n"
+            f"Min. Monitor Helligkeit: {L_min}\n"
         )
 
         ip,stadt,E_dir,E_i,weather_description,azimuth,elevation,sunrise_local, sunset_local = einfallendes_Licht(moebel, grad, winkel)
@@ -78,12 +84,11 @@ class MyWindow(QDialog):
         E_i=E_i*J
         E_dir=E_dir*J
 
-        D_i = round((E_i*0.535)+(E_k*0.235)+(E_dir))
+        E_mon = round((E_i*0.535)+(E_k*0.235)+(E_dir))
         
         R_D=0.05
-        L_max=250
-        L_min=0.25
-        L_r,L_max_neu,r_ist=Kontrast(D_i,R_D,L_max,L_min)
+        
+        L_r,L_max_neu,r_ist=Kontrast(E_mon,R_D,L_max,L_min)
 
         helligkeit, kontrast, data = monitor()
         dis1, dis2 = data["Display1"]["Model"], data["Display2"]["Model"]
@@ -94,7 +99,7 @@ class MyWindow(QDialog):
             f"natürliches Licht: {E_i} Lux\n"
             f"Künstliches Licht: {E_k} Lux\n"
             f"Direkte Sonneneinstrahlung: {E_dir} Lux\n"
-            f"Licht auf Monitor: {D_i} Lux\n"
+            f"Licht auf Monitor: {E_mon} Lux\n"
             f"Reflektiertes Licht: {L_r} cd/m²\n"
             f"neue max Heligkeit: {L_max_neu} cd/m²\n"
             f"ist Kontrast: {r_ist}\n"

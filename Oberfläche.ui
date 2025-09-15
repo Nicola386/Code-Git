@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>1369</width>
-    <height>903</height>
+    <height>902</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,18 +21,18 @@
     <rect>
      <x>90</x>
      <y>300</y>
-     <width>341</width>
+     <width>311</width>
      <height>27</height>
     </rect>
    </property>
    <item>
     <property name="text">
-     <string>Ja</string>
+     <string>Nein</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>Nein</string>
+     <string>Ja</string>
     </property>
    </item>
   </widget>
@@ -41,7 +41,7 @@
     <rect>
      <x>90</x>
      <y>370</y>
-     <width>341</width>
+     <width>311</width>
      <height>27</height>
     </rect>
    </property>
@@ -111,8 +111,8 @@
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>110</x>
-     <y>20</y>
+     <x>400</x>
+     <y>10</y>
      <width>331</width>
      <height>19</height>
     </rect>
@@ -178,7 +178,7 @@
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap>arbeitsplatz.png</pixmap>
+    <pixmap>arbeitsplatz.jpg</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
@@ -189,7 +189,7 @@
     <rect>
      <x>90</x>
      <y>440</y>
-     <width>341</width>
+     <width>311</width>
      <height>27</height>
     </rect>
    </property>
@@ -225,7 +225,7 @@
   <widget class="QLabel" name="Ausgabe">
    <property name="geometry">
     <rect>
-     <x>650</x>
+     <x>1000</x>
      <y>50</y>
      <width>201</width>
      <height>151</height>
@@ -244,7 +244,7 @@
   <widget class="QLabel" name="label_7">
    <property name="geometry">
     <rect>
-     <x>680</x>
+     <x>1010</x>
      <y>10</y>
      <width>121</width>
      <height>19</height>
@@ -257,7 +257,7 @@
   <widget class="Line" name="line_2">
    <property name="geometry">
     <rect>
-     <x>590</x>
+     <x>1000</x>
      <y>30</y>
      <width>341</width>
      <height>20</height>
@@ -270,8 +270,8 @@
   <widget class="QLabel" name="LuxWert">
    <property name="geometry">
     <rect>
-     <x>1080</x>
-     <y>420</y>
+     <x>1000</x>
+     <y>740</y>
      <width>241</width>
      <height>151</height>
     </rect>
@@ -289,8 +289,8 @@
   <widget class="QLabel" name="label_8">
    <property name="geometry">
     <rect>
-     <x>1100</x>
-     <y>10</y>
+     <x>1000</x>
+     <y>240</y>
      <width>121</width>
      <height>19</height>
     </rect>
@@ -299,24 +299,11 @@
     <string>Wetterdaten</string>
    </property>
   </widget>
-  <widget class="Line" name="line_3">
-   <property name="geometry">
-    <rect>
-     <x>1000</x>
-     <y>30</y>
-     <width>341</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Horizontal</enum>
-   </property>
-  </widget>
   <widget class="QLabel" name="WetterDaten">
    <property name="geometry">
     <rect>
-     <x>1060</x>
-     <y>50</y>
+     <x>1000</x>
+     <y>280</y>
      <width>281</width>
      <height>141</height>
     </rect>
@@ -334,8 +321,8 @@
   <widget class="QLabel" name="label_9">
    <property name="geometry">
     <rect>
-     <x>1110</x>
-     <y>380</y>
+     <x>1000</x>
+     <y>710</y>
      <width>121</width>
      <height>19</height>
     </rect>
@@ -347,8 +334,8 @@
   <widget class="QLabel" name="label_10">
    <property name="geometry">
     <rect>
-     <x>680</x>
-     <y>380</y>
+     <x>1000</x>
+     <y>430</y>
      <width>121</width>
      <height>19</height>
     </rect>
@@ -357,39 +344,13 @@
     <string>Systemdaten</string>
    </property>
   </widget>
-  <widget class="Line" name="line_4">
-   <property name="geometry">
-    <rect>
-     <x>570</x>
-     <y>400</y>
-     <width>341</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Horizontal</enum>
-   </property>
-  </widget>
-  <widget class="Line" name="line_5">
-   <property name="geometry">
-    <rect>
-     <x>1020</x>
-     <y>400</y>
-     <width>341</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Horizontal</enum>
-   </property>
-  </widget>
   <widget class="QLabel" name="Systemdaten">
    <property name="geometry">
     <rect>
-     <x>570</x>
-     <y>430</y>
-     <width>411</width>
-     <height>251</height>
+     <x>1000</x>
+     <y>470</y>
+     <width>341</width>
+     <height>221</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -405,7 +366,7 @@
   <widget class="QCheckBox" name="checkBox">
    <property name="geometry">
     <rect>
-     <x>450</x>
+     <x>420</x>
      <y>370</y>
      <width>111</width>
      <height>25</height>
@@ -725,7 +686,7 @@
   <widget class="QCheckBox" name="checkBox_2">
    <property name="geometry">
     <rect>
-     <x>440</x>
+     <x>430</x>
      <y>140</y>
      <width>111</width>
      <height>25</height>
@@ -733,6 +694,202 @@
    </property>
    <property name="text">
     <string>Kein Fenster</string>
+   </property>
+  </widget>
+  <widget class="Line" name="line_7">
+   <property name="geometry">
+    <rect>
+     <x>970</x>
+     <y>0</y>
+     <width>51</width>
+     <height>901</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+  </widget>
+  <widget class="Line" name="line_4">
+   <property name="geometry">
+    <rect>
+     <x>1000</x>
+     <y>450</y>
+     <width>341</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="Line" name="line_3">
+   <property name="geometry">
+    <rect>
+     <x>1000</x>
+     <y>260</y>
+     <width>341</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="Line" name="line_5">
+   <property name="geometry">
+    <rect>
+     <x>1000</x>
+     <y>730</y>
+     <width>341</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="Line" name="line_6">
+   <property name="geometry">
+    <rect>
+     <x>1000</x>
+     <y>220</y>
+     <width>341</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="Line" name="line_8">
+   <property name="geometry">
+    <rect>
+     <x>1000</x>
+     <y>690</y>
+     <width>341</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="Line" name="line_9">
+   <property name="geometry">
+    <rect>
+     <x>1000</x>
+     <y>410</y>
+     <width>341</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_11">
+   <property name="geometry">
+    <rect>
+     <x>570</x>
+     <y>40</y>
+     <width>361</width>
+     <height>91</height>
+    </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::NoFrame</enum>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Helligkeitswerte und statischer Kontrast ,&lt;/p&gt;&lt;p&gt;für das Monitor Modell&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="textFormat">
+    <enum>Qt::AutoText</enum>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+   </property>
+   <property name="margin">
+    <number>0</number>
+   </property>
+  </widget>
+  <widget class="QSpinBox" name="spinBox">
+   <property name="geometry">
+    <rect>
+     <x>570</x>
+     <y>130</y>
+     <width>131</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="minimum">
+    <number>1</number>
+   </property>
+   <property name="maximum">
+    <number>10000</number>
+   </property>
+   <property name="value">
+    <number>250</number>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_12">
+   <property name="geometry">
+    <rect>
+     <x>740</x>
+     <y>130</y>
+     <width>161</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>max. Helligkeit in Nits</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_13">
+   <property name="geometry">
+    <rect>
+     <x>740</x>
+     <y>170</y>
+     <width>161</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>statischer Kontrast</string>
+   </property>
+  </widget>
+  <widget class="Line" name="line_10">
+   <property name="geometry">
+    <rect>
+     <x>530</x>
+     <y>60</y>
+     <width>51</width>
+     <height>841</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+  </widget>
+  <widget class="QSpinBox" name="spinBox_2">
+   <property name="geometry">
+    <rect>
+     <x>570</x>
+     <y>170</y>
+     <width>131</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="minimum">
+    <number>1</number>
+   </property>
+   <property name="maximum">
+    <number>10000</number>
+   </property>
+   <property name="value">
+    <number>1000</number>
    </property>
   </widget>
  </widget>
