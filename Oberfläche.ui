@@ -896,7 +896,7 @@
    <property name="geometry">
     <rect>
      <x>570</x>
-     <y>300</y>
+     <y>350</y>
      <width>231</width>
      <height>27</height>
     </rect>
@@ -921,7 +921,7 @@
    <property name="geometry">
     <rect>
      <x>570</x>
-     <y>270</y>
+     <y>320</y>
      <width>291</width>
      <height>21</height>
     </rect>
@@ -956,6 +956,19 @@
     <string>Regelung in Buckets (Windows)</string>
    </property>
   </widget>
+  <widget class="QLabel" name="label_16">
+   <property name="geometry">
+    <rect>
+     <x>690</x>
+     <y>220</y>
+     <width>111</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://www.displayspecifications.com/en/model/9536166d&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Monitor Daten&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections>
@@ -977,7 +990,7 @@
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="Himmelsrichtung"/>
   <buttongroup name="Fenster_pos"/>
+  <buttongroup name="Himmelsrichtung"/>
  </buttongroups>
 </ui>
