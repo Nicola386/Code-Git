@@ -227,7 +227,7 @@
     <rect>
      <x>1000</x>
      <y>50</y>
-     <width>201</width>
+     <width>311</width>
      <height>151</height>
     </rect>
    </property>
@@ -890,6 +890,70 @@
    </property>
    <property name="value">
     <number>1000</number>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="comboBox_4">
+   <property name="geometry">
+    <rect>
+     <x>570</x>
+     <y>300</y>
+     <width>231</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>Nah am Fenster (&lt;2m)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Mitte des Raumes (2m-4m)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>entfernt vom Fenster (&gt;4m)</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="label_14">
+   <property name="geometry">
+    <rect>
+     <x>570</x>
+     <y>270</y>
+     <width>291</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Entfernung des Fensters zum Schreibtisch</string>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="checkBox_3">
+   <property name="geometry">
+    <rect>
+     <x>710</x>
+     <y>500</y>
+     <width>92</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Buckets</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_15">
+   <property name="geometry">
+    <rect>
+     <x>650</x>
+     <y>470</y>
+     <width>221</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Regelung in Buckets (Windows)</string>
    </property>
   </widget>
  </widget>

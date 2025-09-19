@@ -81,7 +81,7 @@ def einfallendes_Licht(moebel,Fenster_ausr,Fenster_pos):
     gamma_M=(azimuth-180) - a_M
     cos_theta_SM=np.cos(gamma_s_rad*(2*np.pi/360))*np.cos(gamma_M*(2*np.pi/360))
 
-    if (cos_theta_v>0) and (cos_theta_SM>0):
+    if (cos_theta_v>0) and (cos_theta_SM>0) and (CF<0.8):
         S=1
     else:
         S=0
@@ -128,6 +128,7 @@ def Kontrast(D_i,R_D,L_max,L_min):
     L_max_neu=round(L_max_neu,2)
 
     return L_r,L_max_neu,r_ist
+
 
 ################################################
 #Debuggen

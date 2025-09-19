@@ -3,7 +3,7 @@ from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication, QDialog, QLabel, QPushButton
 from Berechnung import einfallendes_Licht ,Kontrast
 from Systemdaten import Standort, monitor
-from Monitor import Helligkeit_Regeln
+from Monitor import Helligkeit_Regeln,Buckets_Regelung
 from datetime import datetime ,time
 
 richtung_zu_grad = {
@@ -27,7 +27,12 @@ richtung_zu_winkel={
     "vl":135
 
 }
+Entfernung_zu_Fenster={
+    "Nah am Fenster (<2m)":1,
+    "Mitte des Raumes (2m-4m)":0.5,
+    "entfernt vom Fenster (>4m)":0.2
 
+}
 class MyWindow(QDialog):
     def __init__(self):
         super().__init__()
@@ -45,6 +50,9 @@ class MyWindow(QDialog):
         fenster_pos=fenster.text() if fenster else "vorne"
         winkel=richtung_zu_winkel.get(fenster_pos,0)
 
+        Entfernung=self.comboBox_4.currentText()
+        d_f=Entfernung_zu_Fenster.get(Entfernung,0)
+
         SK=self.spinBox_2.value()
         L_max=self.spinBox.value()
         Kein_Fenster=self.checkBox_2.isChecked()
@@ -52,6 +60,9 @@ class MyWindow(QDialog):
         Licht = self.comboBox_2.currentText()
         moebel = self.comboBox_3.currentText()
         Auto_Modus=self.checkBox.isChecked()
+        Buckets=self.checkBox_3.isChecked()
+
+        
 
         K = 1 if self.comboBox_2.currentText() == "An" else 0
         Licht = "An" if K else "Aus"
@@ -75,25 +86,30 @@ class MyWindow(QDialog):
             f"Fensterwinkel: {winkel}\n"
             f"Max. Monitor Helligkeit: {L_max}\n"
             f"Min. Monitor Helligkeit: {L_min}\n"
+            f"Entfernung zu Fenster: {Entfernung}"
         )
 
         ip,stadt,E_dir,E_i,weather_description,azimuth,elevation,sunrise_local, sunset_local = einfallendes_Licht(moebel, grad, winkel)
         #F = fenster_pos / 180 if fenster_pos <= 180 else -fenster_pos / 180 + 2            #Direkte Beleuchtung Monitor
         E_k=500
         E_k=E_k*K
-        E_i=E_i*J
+        E_i=E_i*J*d_f
         E_dir=E_dir*J
 
         E_mon = round((E_i*0.535)+(E_k*0.235)+(E_dir))
         
         R_D=0.05
-        
+
+     
         L_r,L_max_neu,r_ist=Kontrast(E_mon,R_D,L_max,L_min)
 
         helligkeit, kontrast, data = monitor()
         dis1, dis2 = data["Display1"]["Model"], data["Display2"]["Model"]
 
-        Helligkeit_Regeln(helligkeit,L_max,L_max_neu)
+        if Buckets:
+            Buckets_Regelung(E_mon,helligkeit)
+        else:
+            Helligkeit_Regeln(helligkeit,L_max,L_max_neu)
 
         self.findChild(QLabel, 'LuxWert').setText(
             f"natürliches Licht: {E_i} Lux\n"
