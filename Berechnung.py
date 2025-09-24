@@ -105,8 +105,8 @@ def einfallendes_Licht(moebel,Fenster_ausr,Fenster_pos):
     # Einfallendes Licht E_i 
     E_i = (Ag * tau * theta_F * M * E_t * eta) / (At * (1 - R**2) * 0.396 * 100)
     E_i = round(E_i, 2)
-
-
+    
+    
     return ip_address,city,E_dir,E_i,weather_description,azimuth,elevation,sunrise_local, sunset_local
 
 def Kontrast(D_i,R_D,L_max,L_min):
@@ -137,5 +137,5 @@ def Kontrast(D_i,R_D,L_max,L_min):
 # if result:
 #     (ip_address,city,E_dir,E_i,weather_description,azimuth,elevation,sunrise_local, sunset_local)=result
 #     print("Direkte Sonneneinstrahlung W/m²:",E_dir)
-#     print("E_i (Einfallendes Licht):", E_i)
+#     print("E_i (Einfallendes Licht):", E_i,)
 ################################################
