@@ -90,7 +90,6 @@ class MyWindow(QDialog):
         )
 
         ip,stadt,E_dir,E_i,weather_description,azimuth,elevation,sunrise_local, sunset_local = einfallendes_Licht(moebel, grad, winkel)
-        #F = fenster_pos / 180 if fenster_pos <= 180 else -fenster_pos / 180 + 2            #Direkte Beleuchtung Monitor
         E_k=500
         E_k=E_k*K
         E_i=E_i*J*d_f
@@ -103,8 +102,8 @@ class MyWindow(QDialog):
      
         L_r,L_max_neu,r_ist=Kontrast(E_mon,R_D,L_max,L_min)
 
-        helligkeit, kontrast, data = monitor()
-        dis1, dis2 = data["Display1"]["Model"], data["Display2"]["Model"]
+        helligkeit, kontrast, dis1,dis2 = monitor()
+        
 
         if Buckets:
             Buckets_Regelung(E_mon,helligkeit)

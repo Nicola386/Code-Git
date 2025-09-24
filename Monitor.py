@@ -1,11 +1,13 @@
 import subprocess
-import requests
+from monitorcontrol import get_monitors
 
 def Monitor_einstellen(display, h_neu):
 
     subprocess.run([
         "ddcutil", "--display", str(display), "setvcp", "10", str(h_neu)
     ])
+    monitor=[]
+    monitor.set_luminance(h_neu)
     return
 
 def Helligkeit_Regeln(helligkeit,L_max,L_max_soll):

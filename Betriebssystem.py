@@ -2,14 +2,13 @@ from monitorcontrol import get_monitors
 from monitorcontrol.vcp import VCPError
 import platform
 
-#BS=platform.system()
-#print(BS)
-
+BS=platform.system()
+print(BS)
 
 def get_monitor_details():
-    """
-    Sucht alle Monitore und gibt deren Modell, Helligkeit und Kontrast aus.
-    """
+    
+#Sucht alle Monitore und gibt deren Modell, Helligkeit und Kontrast aus.
+    
     print("Suche nach Monitoren...")
     
     try:
@@ -50,5 +49,5 @@ def get_monitor_details():
             except Exception as e:
                 print(f"Ein unerwarteter Fehler ist bei Monitor {i} aufgetreten: {e}")
 
-if __name__ == "__main__":
-    get_monitor_details()
+#if __name__ == "__main__":
+#    get_monitor_details()
