@@ -2,8 +2,8 @@ from monitorcontrol import get_monitors
 from monitorcontrol.vcp import VCPError
 import platform
 
-BS=platform.system()
-print(BS)
+#BS=platform.system()
+#print(BS)
 
 
 def get_monitor_details():
