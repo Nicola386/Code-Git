@@ -79,11 +79,11 @@ class MyWindow(QDialog):
 
         # Ausgabe
         self.findChild(QLabel, 'Ausgabe').setText(
-            f"Ausrichtung: {grad}°\n"
+            f"Himmelsrichtung: {grad}°\n"
             f"Rollladen: {rollladen}\n"
             f"Licht: {Licht}\n"
             f"Möbel: {moebel}\n"
-            f"Fensterwinkel: {winkel}\n"
+            f"Monitorausrichtung: {winkel}\n"
             f"Max. Monitor Helligkeit: {L_max}\n"
             f"Min. Monitor Helligkeit: {L_min}\n"
             f"Entfernung zu Fenster: {Entfernung}"
@@ -96,7 +96,8 @@ class MyWindow(QDialog):
         E_dir=E_dir*J
 
         E_mon = round((E_i*0.535)+(E_k*0.235)+(E_dir))
-        
+        E_s=round(E_i+E_k+E_dir)
+
         R_D=0.05
 
      
@@ -115,6 +116,7 @@ class MyWindow(QDialog):
             f"Künstliches Licht: {E_k} Lux\n"
             f"Direkte Sonneneinstrahlung: {E_dir} Lux\n"
             f"Licht auf Monitor: {E_mon} Lux\n"
+            f"Licht auf Schreibtisch: {E_s}\n"
             f"Reflektiertes Licht: {L_r} cd/m²\n"
             f"neue max Heligkeit: {L_max_neu} cd/m²\n"
             f"ist Kontrast: {r_ist}\n"

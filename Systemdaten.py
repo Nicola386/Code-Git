@@ -1,5 +1,3 @@
-# Kompletter Inhalt für Systemdaten.py
-
 import subprocess
 import datetime as dt
 import time

@@ -109,10 +109,10 @@ def einfallendes_Licht(moebel,Fenster_ausr,Fenster_pos):
     
     return ip_address,city,E_dir,E_i,weather_description,azimuth,elevation,sunrise_local, sunset_local
 
-def Kontrast(D_i,R_D,L_max,L_min):
+def Kontrast(E_i,R_D,L_max,L_min):
     
     r_soll=50
-    L_r=(D_i*R_D)/ np.pi
+    L_r=(E_i*R_D)/ np.pi
     L_r=round(L_r,2)
     # ###################################
     # ist Kontarst übeflüssig
