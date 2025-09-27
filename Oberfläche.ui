@@ -273,7 +273,7 @@
      <x>1000</x>
      <y>740</y>
      <width>241</width>
-     <height>151</height>
+     <height>161</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -993,7 +993,7 @@
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="Fenster_pos"/>
   <buttongroup name="Himmelsrichtung"/>
+  <buttongroup name="Fenster_pos"/>
  </buttongroups>
 </ui>

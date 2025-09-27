@@ -17,52 +17,52 @@ def Systemdaten():
 def monitor():
 
     def monitor_win():
-        helligkeit = None
-        kontrast = None
-        model = "Kein Monitor gefunden"
-        monitors_data = []
+    #     helligkeit = None
+    #     kontrast = None
+    #     model = "Kein Monitor gefunden"
+    #     monitors_data = []
 
-        print("Suche nach Monitoren unter Windows...")
-        try:
-            monitors = list(get_monitors())
-        except Exception as e:
-            print(f"Fehler bei der Monitorsuche: {e}")
-            return helligkeit, kontrast, model, "N/A"
+    #     print("Suche nach Monitoren unter Windows...")
+    #     try:
+    #         monitors = list(get_monitors())
+    #     except Exception as e:
+    #         print(f"Fehler bei der Monitorsuche: {e}")
+    #         return helligkeit, kontrast, model, "N/A"
 
-        if not monitors:
-            print("Keine Monitore gefunden. Ist DDC/CI im Monitor-Menü aktiviert?")
-            return helligkeit, kontrast, model, "N/A"
+    #     if not monitors:
+    #         print("Keine Monitore gefunden. Ist DDC/CI im Monitor-Menü aktiviert?")
+    #         return helligkeit, kontrast, model, "N/A"
 
-        print(f"{len(monitors)} Monitor(en) gefunden:\n")
+    #     print(f"{len(monitors)} Monitor(en) gefunden:\n")
 
-        for i, monitor_obj in enumerate(monitors, 1):
-            with monitor_obj:
-                try:
-                    current_model = monitor_obj.get_vcp_capabilities().get('model', 'Unbekanntes Modell')
-                    current_helligkeit = monitor_obj.get_luminance()
-                    current_kontrast = monitor_obj.get_contrast()
+    #     for i, monitor_obj in enumerate(monitors, 1):
+    #         with monitor_obj:
+    #             try:
+    #                 current_model = monitor_obj.get_vcp_capabilities().get('model', 'Unbekanntes Modell')
+    #                 current_helligkeit = monitor_obj.get_luminance()
+    #                 current_kontrast = monitor_obj.get_contrast()
                     
-                    monitors_data.append({
-                        "modell": current_model,
-                        "helligkeit": current_helligkeit,
-                        "kontrast": current_kontrast
-                    })
-                    print(f"--- Monitor {i} ---")
-                    print(f"  Modell:     {current_model}")
-                    print(f"  Helligkeit: {current_helligkeit}%")
-                    print(f"  Kontrast:   {current_kontrast}%")
-                except Exception as e:
-                    print(f"Konnte Daten für Monitor {i} nicht abrufen: {e}")
+    #                 monitors_data.append({
+    #                     "modell": current_model,
+    #                     "helligkeit": current_helligkeit,
+    #                     "kontrast": current_kontrast
+    #                 })
+    #                 print(f"--- Monitor {i} ---")
+    #                 print(f"  Modell:     {current_model}")
+    #                 print(f"  Helligkeit: {current_helligkeit}%")
+    #                 print(f"  Kontrast:   {current_kontrast}%")
+    #             except Exception as e:
+    #                 print(f"Konnte Daten für Monitor {i} nicht abrufen: {e}")
         
-        if monitors_data:
-            first_monitor = monitors_data[0]
-            helligkeit = first_monitor['helligkeit']
-            kontrast = first_monitor['kontrast']
-            model1 = first_monitor['modell']
-            model2 = monitors_data[1]['modell'] if len(monitors_data) > 1 else "N/A"
-            return helligkeit, kontrast, model1, model2
+    #     if monitors_data:
+    #         first_monitor = monitors_data[0]
+    #         helligkeit = first_monitor['helligkeit']
+    #         kontrast = first_monitor['kontrast']
+    #         model1 = first_monitor['modell']
+    #         model2 = monitors_data[1]['modell'] if len(monitors_data) > 1 else "N/A"
+    #         return helligkeit, kontrast, model1, model2
         
-        return None, None, "Fehler beim Auslesen", "N/A"
+         return None, None, "Fehler beim Auslesen", "N/A"
 
     def monitor_linux():
         Helligkeit = {}

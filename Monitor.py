@@ -3,9 +3,9 @@ import subprocess
 
 def Monitor_einstellen(display, h_neu):
 
-    # subprocess.run([
-    #     "ddcutil", "--display", str(display), "setvcp", "10", str(h_neu)
-    # ])
+    subprocess.run([
+         "ddcutil", "--display", str(display), "setvcp", "10", str(h_neu)
+    ])
     # monitor=[]
     # monitor.set_luminance(h_neu)
     return
