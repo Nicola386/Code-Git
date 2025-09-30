@@ -106,7 +106,7 @@ def einfallendes_Licht(moebel,Fenster_ausr,Fenster_pos):
     E_i = (Ag * tau * theta_F * M * E_t * eta) / (At * (1 - R**2) * 0.396 * 100)
     E_i = round(E_i, 2)
     
-    
+    #print(CF)
     return ip_address,city,E_dir,E_i,weather_description,azimuth,elevation,sunrise_local, sunset_local
 
 def Kontrast(E_i,R_D,L_max,L_min):
