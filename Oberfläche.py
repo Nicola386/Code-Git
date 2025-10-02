@@ -98,10 +98,10 @@ class MyWindow(QDialog):
         E_mon = round((E_i*0.535)+(E_k*0.235)+(E_dir))
         E_s=round(E_i+E_k+E_dir)
 
-        R_D=0.05
+        R_D=0.023
 
      
-        L_r,L_max_neu,r_ist=Kontrast(E_mon,R_D,L_max,L_min)
+        L_r,L_soll,r_ist=Kontrast(E_mon,R_D,L_max,L_min)
 
         helligkeit, kontrast, dis1,dis2 = monitor()
         
@@ -109,7 +109,7 @@ class MyWindow(QDialog):
         if Buckets:
             Buckets_Regelung(E_mon,helligkeit)
         else:
-            Helligkeit_Regeln(helligkeit,L_max,L_max_neu)
+            Helligkeit_Regeln(helligkeit,L_max,L_soll)
 
         self.findChild(QLabel, 'LuxWert').setText(
             f"natürliches Licht: {E_i} Lux\n"

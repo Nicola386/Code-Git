@@ -123,11 +123,13 @@ def Kontrast(E_i,R_D,L_max,L_min):
     #######################################
 
     if r_soll != r_ist:
-        L_max_neu= r_soll*(L_min+L_r)-L_r
+        L_soll= r_soll*(L_min+L_r)-L_r
 
-    L_max_neu=round(L_max_neu,2)
+    L_soll=round(L_soll,2)
+    if L_soll <= 100:
+        L_soll=100
 
-    return L_r,L_max_neu,r_ist
+    return L_r,L_soll,r_ist
 
 
 ################################################

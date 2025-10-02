@@ -10,13 +10,13 @@ def Monitor_einstellen(display, h_neu):
     # monitor.set_luminance(h_neu)
     return
 
-def Helligkeit_Regeln(helligkeit,L_max,L_max_soll):
+def Helligkeit_Regeln(helligkeit,L_max,L_soll):
     
     display=2
-    if L_max_soll > L_max:
+    if L_soll > L_max:
         h_neu=100
     else:
-        h_neu=L_max_soll*100/L_max
+        h_neu=L_soll*100/L_max
 
     h_neu=int(h_neu)
     if h_neu != helligkeit:
