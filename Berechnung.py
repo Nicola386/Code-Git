@@ -24,6 +24,13 @@ def einfallendes_Licht(moebel,Fenster_ausr,Fenster_pos):
     city=stadt
     sunrise_local, sunset_local, cloudiness, azimuth, elevation, weather_description = API_Abfrage(city)
 
+    #############################
+    #Validierung
+    #############################
+    azimuth=211
+    elevation=33
+    cloudiness=50
+
     #Reflexionswert
     if moebel=='hell':
         R=0.9
@@ -85,7 +92,7 @@ def einfallendes_Licht(moebel,Fenster_ausr,Fenster_pos):
         S=1
     else:
         S=0
-    E_dir=E_dir*S
+    E_dir=E_dir*S*0.1
     E_dir=round(E_dir,2)
     #Boden reflektion
     rho=0.2                             #später vielleicht aus der Tabelle
@@ -109,10 +116,10 @@ def einfallendes_Licht(moebel,Fenster_ausr,Fenster_pos):
     #print(CF)
     return ip_address,city,E_dir,E_i,weather_description,azimuth,elevation,sunrise_local, sunset_local
 
-def Kontrast(E_i,R_D,L_max,L_min):
+def Kontrast(E_mon,R_D,L_max,L_min):
     
     r_soll=50
-    L_r=(E_i*R_D)/ np.pi
+    L_r=(E_mon*R_D)/ np.pi
     L_r=round(L_r,2)
     # ###################################
     # ist Kontarst übeflüssig

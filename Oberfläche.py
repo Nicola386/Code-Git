@@ -118,7 +118,7 @@ class MyWindow(QDialog):
             f"Licht auf Monitor: {E_mon} Lux\n"
             f"Licht auf Schreibtisch: {E_s}\n"
             f"Reflektiertes Licht: {L_r} cd/m²\n"
-            f"neue max Heligkeit: {L_max_neu} cd/m²\n"
+            f"neue max Heligkeit: {L_soll} cd/m²\n"
             f"ist Kontrast: {r_ist}\n"
         )
 
