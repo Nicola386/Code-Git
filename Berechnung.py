@@ -27,9 +27,9 @@ def einfallendes_Licht(moebel,Fenster_ausr,Fenster_pos):
     #############################
     #Validierung
     #############################
-    azimuth=211
-    elevation=33
-    cloudiness=50
+    #azimuth=211
+    #elevation=33
+    #cloudiness=50
 
     #Reflexionswert
     if moebel=='hell':
@@ -75,11 +75,6 @@ def einfallendes_Licht(moebel,Fenster_ausr,Fenster_pos):
  
     E_d = C * Y * E_DN
     E_d=round(E_d,2)
-    # Sonneneinstrahlung (Bestrahlungsstärke in W/m^2)
-    # Korrektur der Berechnung von I_HT und I_VT
-    # I_HT = Direkte horizontale Bestrahlungsstärke + Diffuse horizontale Bestrahlungsstärke
-    # Direkte horizontale Bestrahlungsstärke = E_DN * sin(gamma_s)
-    # Diffuse horizontale Bestrahlungsstärke = E_d (wenn E_d tatsächlich die diffuse ist)
     E_DNV=max(0,E_DN*cos_theta_v)
     
     #Direkter Sonneneinfall
@@ -95,18 +90,14 @@ def einfallendes_Licht(moebel,Fenster_ausr,Fenster_pos):
     E_dir=E_dir*S*0.1
     E_dir=round(E_dir,2)
     #Boden reflektion
-    rho=0.2                             #später vielleicht aus der Tabelle
+    rho=0.2                           
     E_R=E_DN*(C+np.sin(gamma_s_rad))*rho*0.5
     E_R=round(E_R,2)
     E_t = (E_DNV + E_d+E_R)*F_CF
     E_t = round(E_t, 2)
     
-    # Der Parameter theta in Formel (13) ist "the vertical angle of visible sky from the center of the window".
-    # Dies ist NICHT der Sonnen-Einfallswinkel (theta_v_rad).
-    # Ein typischer Wert könnte 30-60 Grad sein, je nach Fenstertyp und -höhe.
-    # Angenommen, das Fenster ist so, dass ein bestimmter Winkel des Himmels sichtbar ist.
-    # Der Winkel muss im Bogenmaß (Radiant) sein, da er in der Formel nicht mit sin/cos etc. verwendet wird.
-    theta_F = np.radians(45) # Beispielwert: 45 Grad vertikaler Himmelblick vom Fenster
+  
+    theta_F = np.radians(45) 
 
 
     # Einfallendes Licht E_i 
